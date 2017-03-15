@@ -18,8 +18,8 @@ public class CalculateInitialPageRankReducer extends
 
 	public void reduce(Text word, Iterable<Text> values, Context context)
 			throws IOException, InterruptedException {
-		Double Initial_pageRank = 1.0d;
-		System.out.println("rreddsdsavlksnvdnvksnv");
+		Configuration conf=context.getConfiguration();double tempLength=conf.getDouble("length",0);
+		Double Initial_pageRank = 1/tempLength;
 		String sum = "";
 		sum = sum + String.valueOf(Initial_pageRank) + seperator;
 		int i = 0;

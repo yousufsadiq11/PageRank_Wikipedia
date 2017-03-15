@@ -1,7 +1,11 @@
 package wikipedia.org;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.DoubleWritable;
@@ -26,7 +30,7 @@ public class Driver extends Configured implements Tool{
 		job1.setReducerClass(CalculateTotalLinksReducer.class);
 		// Instantiating input and output paths for Job 2
 		FileInputFormat.addInputPath(job1, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job1, new Path(args[1]));
+		FileOutputFormat.setOutputPath(job1, new Path(args[1]+"driver"));
 		// Instantiating corresponding output classes
 		job1.setMapOutputKeyClass(Text.class);
 		job1.setMapOutputValueClass(IntWritable.class);
@@ -39,14 +43,24 @@ public class Driver extends Configured implements Tool{
 		
 	}
 	public boolean InitialPageRank(String[] args) throws ClassNotFoundException, IOException, InterruptedException{
-		Job job2 = Job.getInstance(getConf(), "Calculate Initial Page Rank");
+		   Configuration conf=new Configuration();double title_count=0;
+	
+			    BufferedReader in = new BufferedReader(new FileReader(args[1]+"driver/part-r-00000"));
+			    String str;
+			    while ((str = in.readLine()) != null)
+			        {String splitted[]=str.split("\t");
+			        title_count=Double.parseDouble(splitted[1]);break;
+			        }
+			    in.close();
+		     conf.setDouble("length", title_count);
+		Job job2 = Job.getInstance(conf, "Calculate Initial Page Rank");
 		job2.setJarByClass(this.getClass());
 		// Instantiating it's Mapper, and Reducer classes
 		job2.setMapperClass(CalculateInitialPageRankMapper.class);
 		job2.setReducerClass(CalculateInitialPageRankReducer.class);
 		// Instantiating input and output paths for Job 2
 		FileInputFormat.addInputPath(job2, new Path(args[0]));
-		FileOutputFormat.setOutputPath(job2, new Path("/home/cloudera/Desktop/Output_MapR/iter0"));
+		FileOutputFormat.setOutputPath(job2, new Path(args[1]+"Iteration_count_0"));
 		// Instantiating corresponding output classes
 		job2.setMapOutputKeyClass(Text.class);
 		job2.setMapOutputValueClass(Text.class);
@@ -54,8 +68,6 @@ public class Driver extends Configured implements Tool{
 		job2.setOutputValueClass(Text.class);
 		boolean success = job2.waitForCompletion(true);
 		return success;
-		
-		
 	}
 	
 	public static void main(String[] args) throws Exception {

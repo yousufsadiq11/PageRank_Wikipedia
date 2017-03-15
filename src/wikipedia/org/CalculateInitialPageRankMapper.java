@@ -20,7 +20,6 @@ public class CalculateInitialPageRankMapper extends
 		String merge;
 		String line = lineText.toString();
 		String title_array[] = { " " };
-		//Pattern matching_pattern = Pattern.compile("\\[.+?\\]");
 
 		try {
 			title_array = TextAndTitleRetrieval(lineText);
@@ -33,20 +32,20 @@ public class CalculateInitialPageRankMapper extends
 				Matcher matcher = matching_pattern.matcher(title_array[1]);
 				while (matcher.find()) {
 					String links = matcher.group();
-					links = outLinks(links);System.out.println("asasas"+links);
+					links = outLinks(links);
 					if (links == null || links.isEmpty())
 						continue;
 					check = false;
 					// add valid outlinks to the map.
 					context.write(new Text(title_array[0]), new Text(links));
-					System.out.println(title_array[0] + ", " + links);
+					
 				}
 				if (!matcher.find() && check == true && !(title_array[0] == "")) {
 					context.write(new Text(title_array[0]), new Text(""));
-					System.out.println(title_array[0] + ", " + "");
+					
 				}
 
-				System.out.println(title_array[0] + title_array[1]);
+				
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -56,7 +55,7 @@ public class CalculateInitialPageRankMapper extends
 
 	private String outLinks(String links) {
 		// TODO Auto-generated method stub
-		boolean flag = links.startsWith("[[");System.out.println("advvvvvvvvvvvvvvv");
+		boolean flag = links.startsWith("[[");
 		int begin_text=0;
 		if(flag==true)
 			begin_text=begin_text+2;
@@ -75,7 +74,7 @@ public class CalculateInitialPageRankMapper extends
 				links=links.substring(0,index);
 			}
 			links = links.replaceAll(" ", "_");
-			System.out.println("lllllllllllllllaa"+links);
+			
 			return links;
 		} else {
 			return "";
