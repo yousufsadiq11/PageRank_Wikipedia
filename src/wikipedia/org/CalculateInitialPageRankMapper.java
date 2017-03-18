@@ -20,7 +20,6 @@ public class CalculateInitialPageRankMapper extends
 		String merge;
 		String line = lineText.toString();
 		String title_array[] = { " " };
-
 		try {
 			title_array = TextAndTitleRetrieval(lineText);
 			if (title_array[0].equals(" ")) {// context.write(new
