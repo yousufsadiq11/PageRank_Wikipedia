@@ -38,11 +38,32 @@ public class Driver extends Configured implements Tool {
 		boolean success = job1.waitForCompletion(true);
 		success = InitialPageRank(args);
 		success=Iteration(10, args);
-
-
-	
+		success=sortingPageRank(args);
 		return success ? 0 : 1;
 
+	}
+
+	private boolean sortingPageRank(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		String input=args[1] + "Iteration_count_10";
+		String output= args[1]+ "Sorted_PageRank";
+		Job job4 = Job.getInstance(getConf(), "Sorting Page Rank Values");
+		job4.setJarByClass(this.getClass());
+		// Instantiating Mapper and Reducer Classes
+		//job3.setSortComparatorClass(DescendingKeyComparator.class);
+		job4.setMapperClass(FinalSortedRankMapper.class);
+		//job3.setReducerClass(FinalSortedRankReducer.class);
+		// Instantiating File input and output paths
+		FileInputFormat.addInputPath(job4, new Path(input));
+		FileOutputFormat.setOutputPath(job4, new Path(output));
+		// Instantiating corresponding Output classes
+		job4.setMapOutputKeyClass(Text.class);
+		job4.setMapOutputValueClass(DoubleWritable.class);
+		job4.setOutputKeyClass(Text.class);
+		job4.setOutputValueClass(DoubleWritable.class);
+		boolean success = job4.waitForCompletion(true);
+		return success;
+		
 	}
 
 	private boolean Iteration(int i, String args[]) throws Exception {
@@ -81,7 +102,7 @@ public class Driver extends Configured implements Tool {
 	}
 
 	public boolean InitialPageRank(String[] args)
-			throws ClassNotFoundException, IOException, InterruptedException {
+			throws Exception {
 		Configuration conf = new Configuration();
 		double title_count = 0;
 
