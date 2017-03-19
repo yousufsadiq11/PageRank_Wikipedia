@@ -14,7 +14,7 @@ import org.apache.hadoop.mapreduce.Reducer.Context;
 public class CalculateInitialPageRankReducer extends
 		Reducer<Text, Text, Text, Text> {
 	String seperator = "\t";
-	String list_seperator = ";";
+	String list_seperator = ";;;";
 
 	public void reduce(Text word, Iterable<Text> values, Context context)
 			throws IOException, InterruptedException {

@@ -37,46 +37,35 @@ public class Driver extends Configured implements Tool {
 		job1.setOutputValueClass(IntWritable.class);
 		boolean success = job1.waitForCompletion(true);
 		success = InitialPageRank(args);
-		//success=Iteration(10, args);
-		boolean check=false;
-		for (int iterations = 0; iterations < 1; iterations++) {
+		success=Iteration(10, args);
 
-			String input=args[1] + "Iteration_count_"+ Integer.toString(iterations);
-			String output= args[1]+ "Iteration_count_" + Integer.toString(iterations + 1);
 
-			check = computeIterativePageRank(args);
-
-			//if (!isCompleted)
-				//return 1;
-		}
-
-			//check = computeIterativePageRank(args);
 	
-		return check ? 0 : 1;
+		return success ? 0 : 1;
 
 	}
 
 	private boolean Iteration(int i, String args[]) throws Exception {
 		// TODO Auto-generated method stub
 		boolean check = false;
-		
+		for (int iterations = 0; iterations < 10; iterations++) {
+			String input=args[1] + "Iteration_count_"+ Integer.toString(iterations);
+			String output= args[1]+ "Iteration_count_" + Integer.toString(iterations + 1);
+			check = computeIterativePageRank(input,output);
+		}
 		return check;
 }
 
-	private boolean computeIterativePageRank(String args[])
+	private boolean computeIterativePageRank(String input,String output)
 			throws Exception {
 		// TODO Auto-generated method stub
 		boolean success=false;
-		int iterations=0;
-		//for (int iterations = 0; iterations < 10; iterations++){
-			String input=args[1] + "Iteration_count_0";//+ Integer.toString(iterations);
-			String output= args[1]+ "Iteration_count_" + Integer.toString(iterations + 1);
 			System.out.println(input+" "+output);
 			Job job3 = Job.getInstance(getConf(), "Calculate Iterative Page Rank");
 			job3.setJarByClass(Driver.class);
 			// Instantiating it's Mapper, and Reducer classes
 			job3.setMapperClass(CalculateIterativePageRankMapper.class);
-			//job3.setReducerClass(CalculateInitialPageRankReducer.class);
+			job3.setReducerClass(CalculateIterativePageRankReducer.class);
 			// Instantiating input and output paths for Job 2
 			FileInputFormat.addInputPath(job3, new Path(input));
 			FileOutputFormat.setOutputPath(job3, new Path(output));

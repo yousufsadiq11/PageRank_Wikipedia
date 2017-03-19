@@ -12,8 +12,7 @@ import org.apache.hadoop.mapreduce.Mapper.Context;
 
 public class CalculateIterativePageRankMapper extends
 		Mapper<LongWritable, Text, Text, Text> {
-	// private static final Pattern matching_pattern =
-	// Pattern.compile("\\[.+?\\]");
+
 	public void map(LongWritable offset, Text lineText, Context context)
 			throws IOException, InterruptedException {
 try{
@@ -28,29 +27,30 @@ try{
 		splitted = line.split("\t");System.out.println(splitted.length);
 		String page_title = splitted[0];
 		String page_rank_value = splitted[1];
-		String link_list = "";if (splitted.length==2)
-			return;
+		String link_list = "";if (splitted.length==2){
+			context.write(new Text(page_title), new Text("EliminatingRedLinks"));context.write(new Text(page_title),new Text(page_rank_value + "\t" + 1));return;}
 		if (!(splitted[2].equals(""))) {
 			link_list = splitted[2];
 			System.out.println(page_title + " " + page_rank_value + " "
 					+ link_list);
 		}
-		context.write(new Text(page_title), new Text("################"));
+		context.write(new Text(page_title), new Text("EliminatingRedLinks"));
 		
-		String further_split_all_links[] = link_list.split(";");
+		String further_split_all_links[] = link_list.split(";;;");
 		System.out.println("furtherrrrrrrrrrr        "
 				+ further_split_all_links[0]);
 		length = further_split_all_links.length;
-		if (!(length == 0)) {
-			for (String x : further_split_all_links) {
-				context.write(new Text(x), new Text(page_rank_value + "\t"
+		if (length>0) {
+			for (int i=0;i<further_split_all_links.length;i++) {
+				context.write(new Text(further_split_all_links[i]), new Text(page_rank_value + "\t"
 						+ length));
-				System.out.println(length + "loop" + x + page_rank_value
+				System.out.println(length + "loop" + further_split_all_links[i] + page_rank_value
 						+ length);
 			}
-		} else
-			context.write(new Text(" "), new Text(page_rank_value + "\t" + 1));
-		context.write(new Text(page_title), new Text(link_list));
+		} 
+		else	
+			context.write(new Text(""), new Text(page_rank_value + "\t" + 1));
+		context.write(new Text(page_title), new Text("!@#"+link_list));
 	}catch(Exception e){
 		e.printStackTrace();
 	}

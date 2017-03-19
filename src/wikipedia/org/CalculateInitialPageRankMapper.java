@@ -3,8 +3,6 @@ package wikipedia.org;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -17,8 +15,6 @@ public class CalculateInitialPageRankMapper extends
 			throws IOException, InterruptedException {
 		context.getInputSplit();
 		boolean check = true;
-		String merge;
-		String line = lineText.toString();
 		String title_array[] = { " " };
 		try {
 			title_array = TextAndTitleRetrieval(lineText);
