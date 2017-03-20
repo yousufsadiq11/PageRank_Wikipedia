@@ -10,12 +10,14 @@ public class FinalSortedRankReducer extends
 
 	public void reduce(DoubleWritable word, Iterable<Text> values,
 			Context context) throws IOException, InterruptedException {
-		System.out.println("reducer");
+		// Writing Values from the Mapper to output
+		// Compare method is overridden in DescendingKeyComparator Class which sorts pageRanks in descending order
 		try {
 			for (Text val : values) {
 				context.write(val, word);
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
