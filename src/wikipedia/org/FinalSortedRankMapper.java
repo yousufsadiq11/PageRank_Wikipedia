@@ -16,10 +16,12 @@ public class FinalSortedRankMapper extends
 		context.getInputSplit();
 		try {
 			String line = lineText.toString();
+			// Writing only PageTitle and it's pageRank Value after iterations to the output
 			String splitted[] = line.split(tab_seperator);
 			context.write(new DoubleWritable(Double.parseDouble(splitted[1])),
 					new Text(splitted[0]));
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
