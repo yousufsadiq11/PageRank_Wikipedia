@@ -3,13 +3,8 @@ package wikipedia.org;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.io.ArrayWritable;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.Reducer.Context;
 
 public class CalculateInitialPageRankReducer extends
 		Reducer<Text, Text, Text, Text> {
@@ -18,11 +13,14 @@ public class CalculateInitialPageRankReducer extends
 
 	public void reduce(Text word, Iterable<Text> values, Context context)
 			throws IOException, InterruptedException {
+		// Setting Initial Page Rank as 1/N
+		// 'N' is the number of pages in the corpus
 		Configuration conf=context.getConfiguration();double tempLength=conf.getDouble("length",0);
 		Double Initial_pageRank = 1/tempLength;
 		String sum = "";
 		sum = sum + String.valueOf(Initial_pageRank) + seperator;
 		int i = 0;
+		// Seperating outlinks of a corresponding title with ;;; delimeter
 		if (!values.toString().isEmpty()) {
 			for (Text count : values) {
 				if (i == 0) {
