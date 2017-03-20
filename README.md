@@ -1,9 +1,11 @@
 # PageRank_Wikipedia
+
 Compiler and Platform
--Compiler:     	Java compiler
--Java version: 	JDK 1.7.0
--Programming:   Java
--Platform:     	Eclipse IDE
+
+Compiler:     	Java compiler
+Java version: 	JDK 1.7.0
+Programming:   Java
+Platform:     	Eclipse IDE
 Compilation and execution in Terminal
 Step to create folder in HDFS: Commands to create input folder in hdfs
 1.	sudo su hdfs
@@ -60,6 +62,7 @@ Driver Class: It runs Jobs from one to four and later deletes all the folders in
 Sorted_PageRank folder which has the output file containing page titles and pageRanks sorted in decreasing order.
 
 Execution Steps:
+
 Step 1: Compile java file
 Command: 
 1.	mkdir -p build
