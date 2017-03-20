@@ -3,9 +3,13 @@
 Compiler and Platform
 
 Compiler:     	Java compiler
+
 Java version: 	JDK 1.7.0
+
 Programming:   Java
+
 Platform:     	Eclipse IDE
+
 Compilation and execution in Terminal
 Step to create folder in HDFS: Commands to create input folder in hdfs
 1.	sudo su hdfs
