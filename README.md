@@ -12,6 +12,7 @@ Step to create folder in HDFS: Commands to create input folder in hdfs
 4.	Exit
 5.	Sudo su cloudera
 6.	Hadoop fs -mkdir /user/cloudera/input
+
 After Creating folder in HDFS add files to HDFS
 Step 1: Place the input files in HDFS.
 Command: hadoop fs -put < CanterburyFile folder Path> <Path in HDFS>
