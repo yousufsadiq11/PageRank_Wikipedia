@@ -73,8 +73,10 @@ pageRank value and the value is page rank title.
 FinalSortedRankReducer: It is used to sort the pageRank value in decreasing order by using the DescendingKeyComparator 
 class which overrides the compare method. The output is the page title and the value is pageRank value in decreasing 
 order of pageRank values. 
+
 DescendingKeyComparator Class: It overrides the compare method and it is utilized by FinalSortedRankReducer 
 to sort the pageRank values in the decreasing order.
+
 Driver Class: It runs Jobs from one to four and later deletes all the folders in the output path except the
 Sorted_PageRank folder which has the output file containing page titles and pageRanks sorted in decreasing order.
 
