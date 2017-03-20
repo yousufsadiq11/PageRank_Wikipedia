@@ -1,9 +1,7 @@
 package wikipedia.org;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
@@ -37,72 +35,72 @@ public class Driver extends Configured implements Tool {
 		job1.setOutputValueClass(IntWritable.class);
 		boolean success = job1.waitForCompletion(true);
 		success = InitialPageRank(args);
-		success=Iteration(10, args);
-		success=sortingPageRank(args);
+		success = Iteration(10, args);
+		success = sortingPageRank(args);
 		return success ? 0 : 1;
-
 	}
 
 	private boolean sortingPageRank(String[] args) throws Exception {
 		// TODO Auto-generated method stub
-		String input=args[1] + "Iteration_count_10";
-		String output= args[1]+ "Sorted_PageRank";
+		String input = args[1] + "Iteration_count_2";
+		String output = args[1] + "Sorted_PageRank";
+		// DescendingKeyComparator obj=new DescendingKeyComparator();
 		Job job4 = Job.getInstance(getConf(), "Sorting Page Rank Values");
 		job4.setJarByClass(this.getClass());
 		// Instantiating Mapper and Reducer Classes
-		//job3.setSortComparatorClass(DescendingKeyComparator.class);
+		job4.setSortComparatorClass(DescendingKeyComparator.class);
 		job4.setMapperClass(FinalSortedRankMapper.class);
-		//job3.setReducerClass(FinalSortedRankReducer.class);
+		job4.setReducerClass(FinalSortedRankReducer.class);
 		// Instantiating File input and output paths
 		FileInputFormat.addInputPath(job4, new Path(input));
 		FileOutputFormat.setOutputPath(job4, new Path(output));
 		// Instantiating corresponding Output classes
-		job4.setMapOutputKeyClass(Text.class);
-		job4.setMapOutputValueClass(DoubleWritable.class);
+		job4.setMapOutputKeyClass(DoubleWritable.class);
+		job4.setMapOutputValueClass(Text.class);
 		job4.setOutputKeyClass(Text.class);
 		job4.setOutputValueClass(DoubleWritable.class);
 		boolean success = job4.waitForCompletion(true);
 		return success;
-		
 	}
 
-	private boolean Iteration(int i, String args[]) throws Exception {
+	private boolean Iteration(int n, String args[]) throws Exception {
 		// TODO Auto-generated method stub
 		boolean check = false;
-		for (int iterations = 0; iterations < 10; iterations++) {
-			String input=args[1] + "Iteration_count_"+ Integer.toString(iterations);
-			String output= args[1]+ "Iteration_count_" + Integer.toString(iterations + 1);
-			check = computeIterativePageRank(input,output);
+		for (int iterations = 0; iterations < n; iterations++) {
+			String input = args[1] + "Iteration_count_"
+					+ Integer.toString(iterations);
+			String output = args[1] + "Iteration_count_"
+					+ Integer.toString(iterations + 1);
+			check = computeIterativePageRank(input, output);
 		}
 		return check;
-}
+	}
 
-	private boolean computeIterativePageRank(String input,String output)
+	private boolean computeIterativePageRank(String input, String output)
 			throws Exception {
 		// TODO Auto-generated method stub
-		boolean success=false;
-			System.out.println(input+" "+output);
-			Job job3 = Job.getInstance(getConf(), "Calculate Iterative Page Rank");
-			job3.setJarByClass(Driver.class);
-			// Instantiating it's Mapper, and Reducer classes
-			job3.setMapperClass(CalculateIterativePageRankMapper.class);
-			job3.setReducerClass(CalculateIterativePageRankReducer.class);
-			// Instantiating input and output paths for Job 2
-			FileInputFormat.addInputPath(job3, new Path(input));
-			FileOutputFormat.setOutputPath(job3, new Path(output));
-			// Instantiating corresponding output classes
-			job3.setMapOutputKeyClass(Text.class);
-			job3.setMapOutputValueClass(Text.class);
-			job3.setOutputKeyClass(Text.class);
-			job3.setOutputValueClass(Text.class);
-			success = job3.waitForCompletion(true);
-			
-		//}
+		boolean success = false;
+		System.out.println(input + " " + output);
+		Job job3 = Job.getInstance(getConf(), "Calculate Iterative Page Rank");
+		job3.setJarByClass(Driver.class);
+		// Instantiating it's Mapper, and Reducer classes
+		job3.setMapperClass(CalculateIterativePageRankMapper.class);
+		job3.setReducerClass(CalculateIterativePageRankReducer.class);
+		// Instantiating input and output paths for Job 2
+		FileInputFormat.addInputPath(job3, new Path(input));
+		FileOutputFormat.setOutputPath(job3, new Path(output));
+		// Instantiating corresponding output classes
+		job3.setMapOutputKeyClass(Text.class);
+		job3.setMapOutputValueClass(Text.class);
+		job3.setOutputKeyClass(Text.class);
+		job3.setOutputValueClass(Text.class);
+		success = job3.waitForCompletion(true);
+
+		// }
 		return success;
 	}
 
-	public boolean InitialPageRank(String[] args)
-			throws Exception {
+	public boolean InitialPageRank(String[] args) throws Exception {
 		Configuration conf = new Configuration();
 		double title_count = 0;
 
@@ -139,36 +137,3 @@ public class Driver extends Configured implements Tool {
 		System.exit(res);
 	}
 }
-/*String splitted[] = {""} ;
-		splitted[1]="";
-		splitted[0]="";
-		splitted[2]="";
-		
-		
-context.getInputSplit();
-int length = 0;
-String line = lineText.toString();
-String splitted[] = { "" };
-System.out.println("asxaascac");
-splitted = line.split("\t");
-String page_title = splitted[0];
-String page_rank_value = splitted[1];
-String link_list="";
-if(!(splitted[2].equals(""))){
-link_list = splitted[2];System.out.println(page_title+" "+page_rank_value+" "+link_list);}
-context.write(new Text(page_title), new Text("################"));
-if (link_list.length()==0)
-	return;
-String further_split_all_links[] = link_list.split(";");
-System.out.println("furtherrrrrrrrrrr        "+further_split_all_links[0]);
-length = further_split_all_links.length;
-if (!(length == 0)) {
-	for (String x:further_split_all_links){
-		context.write(new Text(x), new Text(
-				page_rank_value + "\t" + length));
-		System.out.println(length+"loop"+x+page_rank_value+length);	
-	}
-} else
-	context.write(new Text(""), new Text(page_rank_value + "\t" + 1));
-context.write(new Text(page_title), new Text(link_list));
-*/
