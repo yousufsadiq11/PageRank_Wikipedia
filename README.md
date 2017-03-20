@@ -18,12 +18,14 @@ Step 1: Place the input files in HDFS.
 Command: hadoop fs -put < CanterburyFile folder Path> <Path in HDFS>
 Example: Hadoop fs -put /home/cloudera/Downloads/cantrbry/Canterbury/ /user/cloudera/input/
 Driver Class: It includes configurations to run the jobs based on the input and output it receives.
+
 Job 1:
 CalculateTotaLinksMapper: It parses the input XML document and checks if there is any valid data
 between the <title> and </title> tags. The presence of valid data indicates that it is a valid title.
 If such a vaild data is found then a key called "Count of Pages" is set and it's value is set to One.
 CalculateTotalLinksReducer: It sums up all the values for the Key "Count of Pages" and sets value
 to the count. The count indicates the number of valid pages between the titles tag in the XML data.
+
 Job 2: 
 CalculateInitialPageRankMapper: Configuration object is passed through this job. It has the titles count
 obtained from the first job. In this class mapper is used to extract data from the XML file. It extracts 
@@ -34,6 +36,7 @@ CalculateInitialPageRankReducer: Here initial pageRank is set to 1/N.
 N: Number retrieved from the configuration object i.e title count from Job 1.
 Here the key is the page title. The value is concatenation of pageRank value and list of outlinks
 corresponding to a specific page title seperated by tab.
+
 Job 3:
 CalculateIterativePageRankMapper: The Driver class is set to run this specific job to iterate for ten times.
 This is done so that the values converge. The output acts as input for the next iteration.
@@ -44,6 +47,7 @@ CalculateIterativePageRankReducer: It calculates the pageRank using the pageRank
 specific page title depending on the outlinks the page title has which is received from mapper. It eliminates the redlinks.
 The output has the key and value similar to Job 2 but with updated pageRank value. The format is similar to Job 2 to 
 make output understandable for the following iterations.
+
 Job 4:
 FinalSortedRankMapper: It retrieves the page title and page rank value obtained from iteration 10. The key is 
 pageRank value and the value is page rank title.
@@ -54,6 +58,8 @@ DescendingKeyComparator Class: It overrides the compare method and it is utilize
 to sort the pageRank values in the decreasing order.
 Driver Class: It runs Jobs from one to four and later deletes all the folders in the output path except the
 Sorted_PageRank folder which has the output file containing page titles and pageRanks sorted in decreasing order.
+
+Execution Steps:
 Step 1: Compile java file
 Command: 
 1.	mkdir -p build
