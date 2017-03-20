@@ -81,18 +81,32 @@ Sorted_PageRank folder which has the output file containing page titles and page
 Execution Steps:
 
 Step 1: Compile java file
+
 Command: 
 1.	mkdir -p build
+
 2.	Java -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* <JAVA FILE PATH> -d build -Xlint
+
 Example: Java -cp /usr/lib/hadoop/*:/usr/lib/hadoop-mapreduce/* /home/cloudera/workspace/training/src/wikipedia/org/Driver.java -d build -Xlint
+
 Step 2: JAR Generation
+
 Command:  jar -cvf <JAR PATH> -C build/ .
+
 Example: jar -cvf Driver.jar -C build/ .
+
 Step 3: Running JAR
+
 Command: Hadoop jar <JAR PATH> <Package Name of JAVA CLASS> <Input Folder Path in HDFS> <Output Folder Path in HDFS>
+
 Example: Hadoop jar Driver.jar wikipedia.org.Driver /user/cloudera/input/ /user/cloudera/output/
+
 To Run the program again Delete the output Folder or change the Output folder path during Execution.
+
 Command to delete output folder: Hadoop fs -rm -r <Output Folder Path>
+
 Example: Hadoop fs -rm -r /home/cloudera/output/Sorted_PageRank
+
 Sorted_PageRank is the folder containing output. It has page titles and pageRank values in decreasing order.
+
 To re-execute the program delete the Sorted_PageRank folder and run it.
