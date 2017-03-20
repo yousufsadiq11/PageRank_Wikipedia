@@ -1,7 +1,10 @@
 package wikipedia.org;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -22,9 +25,29 @@ public class Driver extends Configured implements Tool {
 		success = calculateInitialPageRank(args);
 		success = computeIterations(10, args);
 		success = sortPageRank(args);
+		if(success)
+			success=deleteFoldersInOutputPath(new File(args[1]));
 		return success ? 0 : 1;
 	}
 	
+	// Method to delete folders in the output path recursively
+	// Deletes all folders except Sorted_pageRank folder which has the pageRank in descending order
+	private boolean deleteFoldersInOutputPath(File dir) {
+		// TODO Auto-generated method stub
+		boolean success = false;
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				if(!(children[i].equals("Sorted_PageRank")))
+				success = deleteFoldersInOutputPath(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+		return dir.delete();
+	}
+
 	// Job to calculate total Number of Pages
 	private boolean calculateNumberOfTitles(String[] args) throws Exception {
 		// TODO Auto-generated method stub
