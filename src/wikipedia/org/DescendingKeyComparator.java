@@ -14,6 +14,6 @@ public class DescendingKeyComparator extends WritableComparator {
 		DoubleWritable d1 = (DoubleWritable) w1;
 		DoubleWritable d2 = (DoubleWritable) w2;
 		int cmp = d1.compareTo(d2);
-		return cmp * -1; // reverse
+		return cmp * -1;
 	}
 }
