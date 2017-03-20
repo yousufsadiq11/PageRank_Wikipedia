@@ -10,6 +10,7 @@ public class DescendingKeyComparator extends WritableComparator {
 	}
 
 	@Override
+	// Method to retrieve values in descending order
 	public int compare(WritableComparable w1, WritableComparable w2) {
 		DoubleWritable d1 = (DoubleWritable) w1;
 		DoubleWritable d2 = (DoubleWritable) w2;
