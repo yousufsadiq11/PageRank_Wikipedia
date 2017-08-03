@@ -1,4 +1,6 @@
-# PageRank_Wikipedia
+# PageRank Algorithm on Wikipedia Link Graph using MapReduce 
+
+PageRank Algorithm on Wikipedia Link Graph using MapReduce which computes the PageRank of all the pages and returns the top 100 pages to user based on the Search Query.
 
 Compiler and Platform
 
